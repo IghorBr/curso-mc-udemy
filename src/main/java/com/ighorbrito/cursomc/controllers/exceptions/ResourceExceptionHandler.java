@@ -1,4 +1,4 @@
-package com.ighorbrito.cursomc.resources.exceptions;
+package com.ighorbrito.cursomc.controllers.exceptions;
 
 import javax.servlet.http.HttpServletRequest;
 

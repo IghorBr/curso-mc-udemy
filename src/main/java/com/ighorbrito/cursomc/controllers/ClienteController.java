@@ -1,4 +1,4 @@
-package com.ighorbrito.cursomc.resources;
+package com.ighorbrito.cursomc.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import com.ighorbrito.cursomc.services.ClienteService;
 
 @RestController
 @RequestMapping(value="/clientes")
-public class ClienteResource {
+public class ClienteController {
 
 	@Autowired
 	private ClienteService clienteService;

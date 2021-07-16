@@ -70,6 +70,12 @@ public class CursomcApplication implements CommandLineRunner {
 		
 		Categoria ctg1 = new Categoria(null, "Informática");
 		Categoria ctg2 = new Categoria(null, "Escritório");
+		Categoria ctg3 = new Categoria(null, "Lazer");
+		Categoria ctg4 = new Categoria(null, "Livros");
+		Categoria ctg5 = new Categoria(null, "Games");
+		Categoria ctg6 = new Categoria(null, "Roupa");
+		Categoria ctg7 = new Categoria(null, "Som");
+		Categoria ctg8 = new Categoria(null, "Carro");
 		
 		Produto p1 = new Produto(null, "Computador", 2000.00);
 		Produto p2 = new Produto(null, "Impressora", 800.00);
@@ -82,6 +88,9 @@ public class CursomcApplication implements CommandLineRunner {
 		p2.getCategorias().addAll(Arrays.asList(ctg1, ctg2));
 		p3.getCategorias().add(ctg1);
 		
+		categoriaRepository.saveAll(Arrays.asList(ctg1, ctg2, ctg3, ctg4, ctg5, ctg6, ctg7, ctg8));
+		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
+		
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
 		
@@ -92,6 +101,9 @@ public class CursomcApplication implements CommandLineRunner {
 		est1.getCidades().addAll(Arrays.asList(c1));
 		est2.getCidades().addAll(Arrays.asList(c2, c3));
 		
+		estadoRepository.saveAll(Arrays.asList(est1, est2));
+		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
 		Cliente cl1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOA_FISICA);
 		
 		cl1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
@@ -101,10 +113,8 @@ public class CursomcApplication implements CommandLineRunner {
 		
 		cl1.getEnderecos().addAll(Arrays.asList(e1, e2));
 		
-		categoriaRepository.saveAll(Arrays.asList(ctg1, ctg2));
-		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
-		estadoRepository.saveAll(Arrays.asList(est1, est2));
-		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		
 		clienteRepository.save(cl1);
 		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 		
