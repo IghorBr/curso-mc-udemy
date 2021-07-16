@@ -18,15 +18,15 @@ import com.ighorbrito.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ClienteService {
-	
+
 	@Autowired
 	private ClienteRepository clienteRepository;
-	
+
 	public Cliente searchById(Integer id) {
 		Optional<Cliente> obj = clienteRepository.findById(id);
-		
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto de ID "+ id + " não encontrado " +
-				"Tipo: " + Cliente.class.getName()));
+
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto de ID " + id + " não encontrado " + "Tipo: " + Cliente.class.getName()));
 	}
 
 	public Cliente insertCliente(Cliente obj) {
@@ -37,36 +37,35 @@ public class ClienteService {
 	public Cliente updateCliente(Cliente obj) {
 		Cliente newCliente = searchById(obj.getId());
 		updateData(newCliente, obj);
-		
-		return clienteRepository.save(newCliente);
-	}
 
-	private void updateData(Cliente newCliente, Cliente obj) {
-		newCliente.setNome(obj.getNome());
-		newCliente.setEmail(obj.getEmail());
-		
+		return clienteRepository.save(newCliente);
 	}
 
 	public void deleteCliente(Integer id) {
 		searchById(id);
-		try {			
-			clienteRepository.deleteById(id);		
+		try {
+			clienteRepository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegratityException("Não é possível excluir a cliente que possui produtos");
+			throw new DataIntegratityException("Não é possível excluir porque há entidades relacionadas");
 		}
 	}
 
 	public List<Cliente> searchAll() {
 		return clienteRepository.findAll();
 	}
-	
+
 	public Page<Cliente> searchPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return clienteRepository.findAll(pageRequest);
 
 	}
-	
+
 	public Cliente fromDTO(ClienteDTO objDto) {
 		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
+	}
+
+	private void updateData(Cliente newCliente, Cliente obj) {
+		newCliente.setNome(obj.getNome());
+		newCliente.setEmail(obj.getEmail());
 	}
 }
