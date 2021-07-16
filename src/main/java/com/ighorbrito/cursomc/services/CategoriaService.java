@@ -3,10 +3,12 @@ package com.ighorbrito.cursomc.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.ighorbrito.cursomc.domain.Categoria;
 import com.ighorbrito.cursomc.repositories.CategoriaRepository;
+import com.ighorbrito.cursomc.services.exceptions.DataIntegratityException;
 import com.ighorbrito.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -30,6 +32,15 @@ public class CategoriaService {
 	public Categoria updateCategoria(Categoria obj) {
 		searchById(obj.getId());
 		return categoriaRepository.save(obj);
+	}
+
+	public void deleteCategoria(Integer id) {
+		searchById(id);
+		try {			
+			categoriaRepository.deleteById(id);		
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegratityException("Não é possível excluir a categoria que possui produtos");
+		}
 	}
 	
 }
