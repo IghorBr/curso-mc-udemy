@@ -1,5 +1,6 @@
 package com.ighorbrito.cursomc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,10 @@ public class CategoriaService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegratityException("Não é possível excluir a categoria que possui produtos");
 		}
+	}
+
+	public List<Categoria> searchAll() {
+		return categoriaRepository.findAll();
 	}
 	
 }

@@ -1,6 +1,8 @@
 package com.ighorbrito.cursomc.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ighorbrito.cursomc.domain.Categoria;
+import com.ighorbrito.cursomc.dto.CategoriaDTO;
 import com.ighorbrito.cursomc.services.CategoriaService;
 
 @RestController
@@ -50,6 +53,12 @@ public class CategoriaResource {
 	public ResponseEntity<Void> deleteCategoria(@PathVariable Integer id) {
 		categoriaService.deleteCategoria(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAllCategoria() {
+		List<CategoriaDTO> list = categoriaService.searchAll().stream().map(c -> new CategoriaDTO(c)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(list);
 	}
 	
 }
