@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ighorbrito.cursomc.domain.ItemPedido;
 import com.ighorbrito.cursomc.domain.PagamentoComBoleto;
@@ -22,16 +23,20 @@ public class PedidoService {
 	private PedidoRepository pedidoRepository;
 	
 	@Autowired
-	private BoletoService boletoService;
+	private PagamentoRepository pagamentoRepository;
 	
 	@Autowired
-	private PagamentoRepository pagamentoRepository;
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	@Autowired
 	private ProdutoService produtoService;
 	
 	@Autowired
-	private ItemPedidoRepository itemPedidoRepository;
+	private BoletoService boletoService;
+	
+	@Autowired
+	private ClienteService clienteService;
+	
 	
 	public Pedido searchById(Integer id) {
 		Optional<Pedido> obj = pedidoRepository.findById(id);
@@ -40,9 +45,12 @@ public class PedidoService {
 				"Tipo: " + Pedido.class.getName()));
 	}
 
+	@Transactional
 	public Pedido insertPedido(Pedido pedido) {
 		pedido.setId(null);
 		pedido.setInstant(new Date());
+		
+		pedido.setCliente(clienteService.searchById(pedido.getCliente().getId()));
 		
 		pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		pedido.getPagamento().setPedido(pedido);
@@ -56,12 +64,13 @@ public class PedidoService {
 		
 		for (ItemPedido ip : pedido.getItens()) {
 			ip.setDesconto(0.0);
-			ip.setPreco(produtoService.searchById(ip.getProduto().getId()).getPreco());
+			ip.setProduto(produtoService.searchById(ip.getProduto().getId()));
+			ip.setPreco(ip.getProduto().getPreco());
 			ip.setPedido(pedido);
 		}
 		
 		itemPedidoRepository.saveAll(pedido.getItens());
-		
+		System.out.println(pedido);
 		return pedido;
 		
 	}
