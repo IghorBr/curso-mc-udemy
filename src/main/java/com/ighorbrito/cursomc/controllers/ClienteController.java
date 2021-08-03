@@ -37,6 +37,12 @@ public class ClienteController {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@RequestMapping(value="/email", method=RequestMethod.GET)
+	public ResponseEntity<Cliente> findCliente(@RequestParam("value") String email) {
+		Cliente obj = clienteService.searchByEmail(email);
+		return ResponseEntity.ok().body(obj);
+	}
+	
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insertCliente(@RequestBody @Valid ClienteNewDTO objDto) {
 		Cliente objCliente = clienteService.fromDTO(objDto); 
